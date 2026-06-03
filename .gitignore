@@ -1,0 +1,21 @@
+# Java
+target/
+
+# IntelliJ
+.idea/
+*.iml
+
+# Node
+node_modules/
+
+# Env
+.env
+
+# Logs
+*.log
+
+# Mac
+.DS_Store
+
+# Spring secrets
+application.properties
