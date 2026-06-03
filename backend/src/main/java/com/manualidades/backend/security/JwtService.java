@@ -5,22 +5,20 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
 import java.util.Date;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
 
 
 @Service
 public class JwtService {
 
-    private final String SECRET_KEY =
-            "miclavesecretamiclavesecretamiclavesecreta";
-
-    private final Key key =
-            Keys.hmacShaKeyFor(
-                    SECRET_KEY.getBytes()
-            );
+    @Value("${jwt.secret}")
+    private String SECRET_KEY;
 
     public String generateToken(
             String email
@@ -40,10 +38,17 @@ public class JwtService {
                 )
 
                 .signWith(
-                        key,
+                        getSigningKey(),
                         SignatureAlgorithm.HS256
                 )
 
                 .compact();
+    }
+
+    private Key getSigningKey() {
+
+        return Keys.hmacShaKeyFor(
+                SECRET_KEY.getBytes()
+        );
     }
 }
