@@ -11,7 +11,8 @@ import org.springframework.stereotype.Service;
 import java.security.Key;
 import java.util.Date;
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
+
+
 
 
 @Service
@@ -43,6 +44,45 @@ public class JwtService {
                 )
 
                 .compact();
+    }
+
+    public String extractEmail(
+            String token
+    ) {
+
+        Claims claims = Jwts.parser()
+
+                .setSigningKey(getSigningKey())
+
+                .build()
+
+                .parseClaimsJws(token)
+
+                .getBody();
+
+        return claims.getSubject();
+    }
+
+    public boolean isTokenValid(
+            String token
+    ) {
+
+        try {
+
+            Jwts.parser()
+
+                    .setSigningKey(getSigningKey())
+
+                    .build()
+
+                    .parseClaimsJws(token);
+
+            return true;
+
+        } catch (Exception e) {
+
+            return false;
+        }
     }
 
     private Key getSigningKey() {
