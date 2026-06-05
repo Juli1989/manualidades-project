@@ -2,8 +2,17 @@
 
 import { useEffect, useState } from "react";
 
+import { Playfair_Display }
+from "next/font/google";
+
+const playfair = Playfair_Display({
+  subsets: ["latin"],
+  weight: ["400", "600"],
+});
+
 export default function Home() {
 
+  
   const [products, setProducts] = useState([]);
 
   const [name, setName] = useState("");
@@ -11,6 +20,8 @@ export default function Home() {
   const [description, setDescription] = useState("");
 
   const [price, setPrice] = useState("");
+  const [isLogged, setIsLogged] =
+    useState(false);
 
   async function fetchProducts() {
 
@@ -42,6 +53,11 @@ export default function Home() {
   useEffect(() => {
 
     fetchProducts();
+
+    const token =
+      localStorage.getItem("token");
+
+    setIsLogged(!!token);
 
   }, []);
 
@@ -85,13 +101,209 @@ export default function Home() {
 
   return (
 
-    <main className="p-10 max-w-2xl mx-auto">
+  <main className="bg-[#f7f5f2] min-h-screen">
 
-      <h1 className="text-4xl font-bold mb-8">
-        Manualidades Movala
-      </h1>
+    <nav className="
+  flex
+  flex-col
+  items-center
+  py-8
+">
 
-      <div className="space-y-4 mb-10">
+  <div className="
+    flex
+    items-center
+    gap-6
+  ">
+
+    <img
+      src="/movala-logo.png"
+      className="
+        w-74
+        h-74
+        object-cover
+        rounded-full
+      "
+    />
+
+    <h1 className={`
+  ${playfair.className}
+  text-4xl
+  tracking-[4px]
+`}>
+
+      MOVALA
+
+    </h1>
+
+  </div>
+
+  <div className="
+    flex
+    gap-8
+    text-sm
+    mt-8
+  ">
+
+    <a href="/">Shop</a>
+
+    <a href="/">About</a>
+
+    <a href="/">Contact</a>
+
+    <a href="/login">
+      Login
+    </a>
+
+  </div>
+
+</nav>
+
+    <section className="text-center py-10">
+
+      <h2 className="
+        text-4xl
+        mb-4
+        font-light
+      ">
+
+        Joyas hechas a mano
+
+      </h2>
+
+      <p className="text-gray-600">
+
+        Hechas con amor.
+        Thoughtfully designed.
+
+      </p>
+
+    </section>
+
+    <section className="
+      grid
+      grid-cols-1
+      md:grid-cols-3
+      gap-6
+      px-6
+      mb-16
+    ">
+
+      <div>
+
+        <img
+          src="https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0"
+          className="
+            w-full
+            h-[500px]
+            object-cover
+          "
+        />
+
+        <button className="
+          border
+          border-black
+          w-full
+          py-4
+          mt-4
+          hover:bg-black
+          hover:text-white
+          transition
+        ">
+
+          Comprar ahora
+
+        </button>
+
+      </div>
+
+      <div>
+
+        <img
+          src="https://images.unsplash.com/photo-1535632066927-ab7c9ab60908"
+          className="
+            w-full
+            h-[500px]
+            object-cover
+          "
+        />
+
+        <button className="
+          border
+          border-black
+          w-full
+          py-4
+          mt-4
+          hover:bg-black
+          hover:text-white
+          transition
+        ">
+
+          Comprar ahora
+
+        </button>
+
+      </div>
+
+      <div>
+
+        <img
+          src="https://images.unsplash.com/photo-1611652022419-a9419f74343d"
+          className="
+            w-full
+            h-[500px]
+            object-cover
+          "
+        />
+
+        <button className="
+          border
+          border-black
+          w-full
+          py-4
+          mt-4
+          hover:bg-black
+          hover:text-white
+          transition
+        ">
+
+          Comprar ahora
+
+        </button>
+
+      </div>
+
+    </section>
+
+    <section className="
+      flex
+      justify-center
+      gap-10
+      mb-16
+      text-sm
+    ">
+
+      <button>All items</button>
+
+      <button>Earrings</button>
+
+      <button>Necklaces</button>
+
+      <button>Rings</button>
+
+    </section>
+
+    {isLogged && (
+
+      <div className="
+        max-w-xl
+        mx-auto
+        space-y-4
+        mb-16
+        bg-white
+        p-8
+        rounded-2xl
+      ">
 
         <input
           type="text"
@@ -100,7 +312,11 @@ export default function Home() {
           onChange={(e) =>
             setName(e.target.value)
           }
-          className="border p-2 w-full"
+          className="
+            border
+            p-3
+            w-full
+          "
         />
 
         <input
@@ -110,7 +326,11 @@ export default function Home() {
           onChange={(e) =>
             setDescription(e.target.value)
           }
-          className="border p-2 w-full"
+          className="
+            border
+            p-3
+            w-full
+          "
         />
 
         <input
@@ -120,42 +340,88 @@ export default function Home() {
           onChange={(e) =>
             setPrice(e.target.value)
           }
-          className="border p-2 w-full"
+          className="
+            border
+            p-3
+            w-full
+          "
         />
 
         <button
           onClick={createProduct}
-          className="bg-black text-white px-4 py-2 rounded"
+          className="
+            bg-black
+            text-white
+            px-6
+            py-3
+            w-full
+          "
         >
+
           Crear producto
+
         </button>
 
       </div>
+    )}
 
-      <div className="space-y-4">
+    <section className="
+      grid
+      grid-cols-1
+      md:grid-cols-3
+      gap-10
+      px-10
+      pb-20
+    ">
 
-        {products.map((product: any) => (
+      {products.map((product: any) => (
 
-          <div
-            key={product.id}
-            className="border p-4 rounded"
-          >
+        <div
+          key={product.id}
+          className="
+            bg-white
+            p-4
+          "
+        >
 
-            <h2 className="text-2xl font-semibold">
-              {product.name}
-            </h2>
-
-            <p>{product.description}</p>
-
-            <p className="font-bold mt-2">
-              {product.price} €
-            </p>
+          <div className="
+            h-[350px]
+            bg-gray-100
+            mb-4
+          ">
 
           </div>
-        ))}
 
-      </div>
+          <h2 className="
+            text-xl
+            mb-2
+          ">
 
-    </main>
-  );
-}
+            {product.name}
+
+          </h2>
+
+          <p className="
+            text-gray-500
+            mb-4
+          ">
+
+            {product.description}
+
+          </p>
+
+          <p className="
+            font-semibold
+          ">
+
+            {product.price} €
+
+          </p>
+
+        </div>
+      ))}
+
+    </section>
+
+  </main>
+);}
