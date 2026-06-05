@@ -16,7 +16,6 @@ import com.manualidades.backend.security.JwtService;
 public class AuthService {
 
     private final UserRepository userRepository;
-
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
 

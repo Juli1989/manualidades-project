@@ -14,38 +14,70 @@ export default function Home() {
 
   async function fetchProducts() {
 
-    const response = await fetch(
-      "http://localhost:8080/products"
-    );
+    try {
 
-    const data = await response.json();
+      const response = await fetch(
+        "http://localhost:8080/products"
+      );
 
-    setProducts(data);
+      console.log(response);
+
+      if (!response.ok) {
+
+        console.log("Error status:", response.status);
+
+        return;
+      }
+
+      const data = await response.json();
+
+      setProducts(data);
+
+    } catch (error) {
+
+      console.log(error);
+    }
   }
 
   useEffect(() => {
+
     fetchProducts();
+
   }, []);
 
   async function createProduct() {
 
-    await fetch("http://localhost:8080/products", {
+    const token =
+      localStorage.getItem("token");
 
-      method: "POST",
+    const response = await fetch(
+      "http://localhost:8080/products",
+      {
 
-      headers: {
-        "Content-Type": "application/json",
-      },
+        method: "POST",
 
-      body: JSON.stringify({
-        name,
-        description,
-        price: Number(price),
-      }),
-    });
+        headers: {
+
+          "Content-Type": "application/json",
+
+          "Authorization":
+            `Bearer ${token}`,
+        },
+
+        body: JSON.stringify({
+          name,
+          description,
+          price: Number(price),
+        }),
+      }
+    );
+
+    console.log(response);
 
     setName("");
+
     setDescription("");
+
     setPrice("");
 
     fetchProducts();
@@ -56,7 +88,7 @@ export default function Home() {
     <main className="p-10 max-w-2xl mx-auto">
 
       <h1 className="text-4xl font-bold mb-8">
-        Manualidades  Movala
+        Manualidades Movala
       </h1>
 
       <div className="space-y-4 mb-10">
@@ -65,7 +97,9 @@ export default function Home() {
           type="text"
           placeholder="Nombre"
           value={name}
-          onChange={(e) => setName(e.target.value)}
+          onChange={(e) =>
+            setName(e.target.value)
+          }
           className="border p-2 w-full"
         />
 
@@ -73,7 +107,9 @@ export default function Home() {
           type="text"
           placeholder="Descripción"
           value={description}
-          onChange={(e) => setDescription(e.target.value)}
+          onChange={(e) =>
+            setDescription(e.target.value)
+          }
           className="border p-2 w-full"
         />
 
@@ -81,7 +117,9 @@ export default function Home() {
           type="number"
           placeholder="Precio"
           value={price}
-          onChange={(e) => setPrice(e.target.value)}
+          onChange={(e) =>
+            setPrice(e.target.value)
+          }
           className="border p-2 w-full"
         />
 
